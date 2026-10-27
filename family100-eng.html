@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>English Survey 100 - Grade 9 Assessment</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,600;0,700;0,800;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary-glow: #38bdf8;
+      --gold-glow: #f59e0b;
+      --board-bg: #09122c;
+    }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: radial-gradient(circle at 50% 20%, #1e1b4b 0%, #09090b 80%);
+      min-height: 100vh;
+      color: #f8fafc;
+      overflow-x: hidden;
+      user-select: none;
+    }
+    .font-display {
+      font-family: 'Chakra Petch', sans-serif;
+    }
+
+    /* 3D Flip Card Effect */
+    .perspective-1000 {
+      perspective: 1000px;
+    }
+    .card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+      transform-style: preserve-3d;
+    }
+    .card-flipped .card-inner {
+      transform: rotateX(180deg);
+    }
+    .card-front, .card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      border-radius: 0.75rem;
+    }
+    .card-back {
+      transform: rotateX(180deg);
+    }
+
+    /* Shiny TV Stage Accents */
+    .tv-bezel {
+      background: linear-gradient(145deg, #1e293b, #0f172a);
+      box-shadow: 0 0 35px rgba(56, 189, 248, 0.2), inset 0 2px 4px rgba(255, 255, 255, 0.1);
+    }
+    .score-digital {
+      text-shadow: 0 0 15px rgba(245, 158, 11, 0.8), 0 0 30px rgba(245, 158, 11, 0.4);
+    }
+    .board-glow {
+      box-shadow: 0 0 25px rgba(59, 130, 246, 0.35), inset 0 0 15px rgba(37, 99, 235, 0.2);
+    }
+
+    /* Big Screen Strike Animation */
+    @keyframes strikeShake {
+      0%, 100% { transform: scale(1) translate(0, 0); }
+      15% { transform: scale(1.15) translate(-15px, 10px) rotate(-3deg); }
+      30% { transform: scale(1.2) translate(15px, -10px) rotate(3deg); }
+      45% { transform: scale(1.15) translate(-10px, -10px); }
+      60% { transform: scale(1.1) translate(10px, 10px); }
+      75% { transform: scale(1.05) translate(-5px, 0); }
+    }
+    .strike-anim {
+      animation: strikeShake 0.6s ease-in-out;
+    }
+
+    /* Modal Backdrop Filter */
+    .backdrop-blur-tv {
+      backdrop-filter: blur(8px);
+    }
+  </style>
+</head>
+<body class="p-3 md:p-6 flex flex-col justify-between">
+
+  <!-- TOP HEADER / TV LOGO & SCOREBOARD -->
+  <header class="max-w-7xl mx-auto w-full mb-4">
+    <div class="flex flex-wrap items-center justify-between gap-4 mb-3">
+      <!-- Title & Curriculum Tag -->
+      <div class="flex items-center gap-3">
+        <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-amber-500 to-yellow-300 flex items-center justify-center font-display font-black text-slate-950 text-2xl shadow-lg shadow-amber-500/30">
+          100
+        </div>
+        <div>
+          <h1 class="text-xl md:text-2xl font-display font-black uppercase tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-orange-300 to-yellow-200">
+            Family 100: English Arena
+          </h1>
+          <p class="text-xs text-sky-300 font-medium tracking-wide">
+            SMP Grade 9 Formative Assessment • Kurikulum Merdeka
+          </p>
+        </div>
+      </div>
+
+      <!-- Round Info & Actions -->
+      <div class="flex items-center gap-2">
+        <span id="roundIndicator" class="px-3.5 py-1.5 rounded-lg bg-sky-950/80 border border-sky-500/40 font-display font-bold text-sky-400 text-sm shadow">
+          ROUND 1 OF 4
+        </span>
+        <button id="toggleFullscreenBtn" title="Toggle Fullscreen" class="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold border border-slate-700 transition">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
+          </svg>
+        </button>
+        <button id="resetAllBtn" class="px-3 py-1.5 rounded-lg bg-rose-950 hover:bg-rose-900 border border-rose-600/50 text-rose-300 text-xs font-bold transition">
+          Reset Game
+        </button>
+      </div>
+    </div>
+
+    <!-- MAIN SCORE BOARD (TEAM A - CURRENT ROUND - TEAM B) -->
+    <div class="grid grid-cols-12 gap-3 items-stretch">
+      <!-- TEAM A -->
+      <div class="col-span-12 md:col-span-4 bg-slate-900/90 tv-bezel rounded-2xl p-4 border-2 border-indigo-500/50 flex flex-col justify-between shadow-xl">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold uppercase tracking-wider text-indigo-400 flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-indigo-500 animate-pulse"></span>
+            Team A (Eagle)
+          </span>
+          <button onclick="awardScore('teamA')" class="px-2.5 py-1 rounded-md bg-indigo-600/80 hover:bg-indigo-500 text-[11px] font-bold text-white transition shadow">
+            + Award Round
+          </button>
+        </div>
+        <div class="flex items-center justify-between my-2">
+          <div class="text-4xl md:text-5xl font-display font-black text-indigo-300 score-digital" id="scoreTeamA">
+            0
+          </div>
+          <div class="flex items-center gap-1.5 bg-slate-950/80 px-2 py-1.5 rounded-lg border border-slate-800">
+            <button onclick="modifyScore('teamA', 10)" class="w-7 h-7 rounded bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs">+</button>
+            <button onclick="modifyScore('teamA', -10)" class="w-7 h-7 rounded bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs">-</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ROUND POOL SCORE (CENTER DISPLAY) -->
+      <div class="col-span-12 md:col-span-4 bg-gradient-to-b from-amber-950/80 to-slate-950 rounded-2xl p-4 border-2 border-amber-500/60 flex flex-col items-center justify-center text-center shadow-xl relative overflow-hidden">
+        <div class="absolute inset-0 bg-amber-500/5 backdrop-blur-[1px]"></div>
+        <span class="text-xs font-bold uppercase tracking-widest text-amber-400 relative z-10">Current Round Points</span>
+        <div class="text-5xl md:text-6xl font-display font-black text-amber-300 score-digital relative z-10 my-1" id="roundScore">
+          0
+        </div>
+        <span class="text-[11px] text-amber-200/70 relative z-10" id="topicTag">Procedure Text</span>
+      </div>
+
+      <!-- TEAM B -->
+      <div class="col-span-12 md:col-span-4 bg-slate-900/90 tv-bezel rounded-2xl p-4 border-2 border-cyan-500/50 flex flex-col justify-between shadow-xl">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold uppercase tracking-wider text-cyan-400 flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-pulse"></span>
+            Team B (Falcon)
+          </span>
+          <button onclick="awardScore('teamB')" class="px-2.5 py-1 rounded-md bg-cyan-600/80 hover:bg-cyan-500 text-[11px] font-bold text-white transition shadow">
+            + Award Round
+          </button>
+        </div>
+        <div class="flex items-center justify-between my-2">
+          <div class="text-4xl md:text-5xl font-display font-black text-cyan-300 score-digital" id="scoreTeamB">
+            0
+          </div>
+          <div class="flex items-center gap-1.5 bg-slate-950/80 px-2 py-1.5 rounded-lg border border-slate-800">
+            <button onclick="modifyScore('teamB', 10)" class="w-7 h-7 rounded bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs">+</button>
+            <button onclick="modifyScore('teamB', -10)" class="w-7 h-7 rounded bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs">-</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN STAGE / QUESTION & FLIP BOARD -->
+  <main class="max-w-7xl mx-auto w-full my-auto">
+    <!-- SURVEY QUESTION BANNER -->
+    <div class="bg-gradient-to-r from-blue-950 via-slate-900 to-indigo-950 border-2 border-sky-400/40 rounded-2xl p-4 md:p-6 mb-5 text-center shadow-2xl relative">
+      <div class="inline-block px-3 py-1 rounded-full bg-sky-900/70 text-sky-300 border border-sky-400/30 text-xs font-bold uppercase tracking-wider mb-2">
+        We Surveyed 100 Students
+      </div>
+      <h2 id="questionText" class="text-xl md:text-3xl font-display font-extrabold text-white leading-snug drop-shadow">
+        "Name an action verb (imperative) commonly found in food recipe instructions!"
+      </h2>
+      <p id="questionHint" class="text-xs md:text-sm text-sky-300/80 mt-1 italic">
+        Topic: Procedure Text • Food & Beverages
+      </p>
+
+      <!-- STRIKE COUNTER IN HUD -->
+      <div class="absolute right-4 top-4 flex items-center gap-1.5 bg-black/60 px-3 py-1.5 rounded-xl border border-rose-500/30">
+        <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mr-1 hidden sm:inline">Strikes:</span>
+        <span id="strikeDot1" class="text-xl font-display font-black text-slate-700 transition">✕</span>
+        <span id="strikeDot2" class="text-xl font-display font-black text-slate-700 transition">✕</span>
+        <span id="strikeDot3" class="text-xl font-display font-black text-slate-700 transition">✕</span>
+      </div>
+    </div>
+
+    <!-- THE SURVEY ANSWERS GRID (5-6 CARDS) -->
+    <div id="cardsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-3.5 max-w-5xl mx-auto">
+      <!-- Dynamic Answer Cards will be injected here -->
+    </div>
+  </main>
+
+  <!-- HOST CONTROL BAR & INPUT DOCK -->
+  <footer class="max-w-7xl mx-auto w-full mt-5">
+    <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-3 md:p-4 shadow-2xl flex flex-col md:flex-row items-center justify-between gap-4">
+      
+      <!-- Answer Guess Input Form (Auto Synonym Matcher) -->
+      <form id="guessForm" class="flex items-center gap-2 w-full md:w-2/5">
+        <div class="relative w-full">
+          <input 
+            type="text" 
+            id="guessInput"
+            placeholder="Type student's answer (e.g. 'stir', 'boil', 'cut')..." 
+            autocomplete="off"
+            class="w-full bg-slate-950 border border-slate-700 focus:border-amber-400 focus:ring-2 focus:ring-amber-400/30 text-white rounded-xl px-4 py-2.5 text-sm outline-none transition placeholder-slate-500"
+          >
+          <span class="absolute right-3 top-2.5 text-xs text-slate-500">Press Enter ↵</span>
+        </div>
+        <button type="submit" class="px-4 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl text-sm transition shrink-0 flex items-center gap-1.5 shadow-md shadow-amber-500/20">
+          <span>Check</span>
+        </button>
+      </form>
+
+      <!-- STRIKE TRIGGER & REVEAL CONTROLS -->
+      <div class="flex items-center flex-wrap justify-center gap-2">
+        <button id="addStrikeBtn" class="px-4 py-2 rounded-xl bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white font-display font-black text-sm tracking-wider flex items-center gap-2 shadow-lg shadow-rose-900/40 transition">
+          <span class="text-lg">✕</span> STRIKE (WRONG)
+        </button>
+        <button id="clearStrikesBtn" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold border border-slate-700 transition">
+          Reset Strikes
+        </button>
+        <button id="revealAllBtn" class="px-3.5 py-2 rounded-xl bg-sky-800 hover:bg-sky-700 text-sky-200 text-xs font-bold border border-sky-600/50 transition">
+          Reveal All
+        </button>
+      </div>
+
+      <!-- ROUND NAVIGATION CONTROLS -->
+      <div class="flex items-center gap-2">
+        <button id="prevRoundBtn" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs transition border border-slate-700">
+          ◀ Prev
+        </button>
+        <button id="nextRoundBtn" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs tracking-wider uppercase transition shadow-md shadow-indigo-600/20">
+          Next Round ▶
+        </button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- FULLSCREEN STRIKE OVERLAY (TV STYLE BIG 'XXX') -->
+  <div id="strikeOverlay" class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center pointer-events-none opacity-0 transition-opacity duration-200">
+    <div id="strikeGraphic" class="flex items-center gap-4 text-rose-500 font-display font-black text-8xl md:text-9xl drop-shadow-[0_0_50px_rgba(244,63,94,0.9)]">
+      <!-- Big Red Xs inserted by JS -->
+    </div>
+  </div>
+
+  <!-- CELEBRATION / WINNER MODAL -->
+  <div id="winnerModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-tv hidden flex items-center justify-center p-4">
+    <div class="bg-gradient-to-b from-slate-900 to-slate-950 border-2 border-amber-400 rounded-3xl p-8 max-w-lg w-full text-center shadow-2xl relative overflow-hidden">
+      <div class="w-20 h-20 mx-auto rounded-full bg-amber-400/20 border-2 border-amber-400 flex items-center justify-center text-4xl mb-4">
+        🏆
+      </div>
+      <h3 class="text-3xl font-display font-black text-amber-300 uppercase tracking-wider mb-2">
+        Game Completed!
+      </h3>
+      <p id="winnerText" class="text-slate-300 font-semibold text-lg mb-6">
+        Congratulations to Team A for the glorious victory!
+      </p>
+
+      <div class="grid grid-cols-2 gap-4 bg-slate-950/80 p-4 rounded-2xl border border-slate-800 mb-6">
+        <div>
+          <span class="text-xs text-indigo-400 font-bold block mb-1">TEAM A</span>
+          <span id="finalScoreA" class="text-3xl font-display font-black text-white">0</span>
+        </div>
+        <div>
+          <span class="text-xs text-cyan-400 font-bold block mb-1">TEAM B</span>
+          <span id="finalScoreB" class="text-3xl font-display font-black text-white">0</span>
+        </div>
+      </div>
+
+      <button onclick="closeWinnerModal()" class="w-full py-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-display font-black tracking-wider uppercase rounded-xl transition shadow-lg shadow-amber-500/30">
+        Back to Dashboard
+      </button>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT: DATA & INTERACTIVE ENGINE -->
+  <script>
+    /* ==========================================================================
+       1. SYNTHESIZED WEB AUDIO API SOUND SYSTEM (No external dependencies)
+       ========================================================================== */
+    class TVSoundEngine {
+      constructor() {
+        this.ctx = null;
+      }
+      
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          this.ctx = new AudioContext();
+        }
+        if (this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      }
+
+      // Bell Chime for Correct Guess
+      playCorrect() {
+        this.init();
+        const now = this.ctx.currentTime;
+        const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6 (Bright Chord)
+        notes.forEach((freq, index) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, now + index * 0.08);
+
+          gain.gain.setValueAtTime(0, now + index * 0.08);
+          gain.gain.linearRampToValueAtTime(0.3, now + index * 0.08 + 0.02);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + index * 0.08 + 0.6);
+
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now + index * 0.08);
+          osc.stop(now + index * 0.08 + 0.7);
+        });
+      }
+
+      // Harsh Dual-Tone Buzzer for Strike
+      playStrike() {
+        this.init();
+        const now = this.ctx.currentTime;
+        [130.81, 138.59].forEach(freq => { // Minor 2nd dissonance
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(freq, now);
+
+          gain.gain.setValueAtTime(0.4, now);
+          gain.gain.linearRampToValueAtTime(0.35, now + 0.35);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.55);
+
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.55);
+        });
+      }
+
+      // Flip Tile Sound (Wood / Pop Effect)
+      playFlip() {
+        this.init();
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(320, now);
+        osc.frequency.exponentialRampToValueAtTime(140, now + 0.1);
+
+        gain.gain.setValueAtTime(0.3, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.12);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.12);
+      }
+
+      // Fanfare for Winning Round / Game
+      playFanfare() {
+        this.init();
+        const now = this.ctx.currentTime;
+        const melody = [
+          { f: 523.25, d: 0.15 },
+          { f: 523.25, d: 0.15 },
+          { f: 523.25, d: 0.15 },
+          { f: 659.25, d: 0.4 },
+          { f: 783.99, d: 0.3 },
+          { f: 1046.50, d: 0.8 }
+        ];
+        let t = now;
+        melody.forEach(m => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(m.f, t);
+
+          gain.gain.setValueAtTime(0.3, t);
+          gain.gain.exponentialRampToValueAtTime(0.001, t + m.d);
+
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(t);
+          osc.stop(t + m.d + 0.05);
+          t += m.d * 0.85;
+        });
+      }
+    }
+
+    const sound = new TVSoundEngine();
+
+    /* ==========================================================================
+       2. GRADE 9 ENGLISH SURVEY QUESTIONS DATA (4 ROUNDS)
+       ========================================================================== */
+    const GAME_ROUNDS = [
+      {
+        id: 1,
+        topic: "Procedure Text (Recipes & Cooking)",
+        question: "We asked 100 students: Name an action verb (imperative) commonly found in food recipe instructions!",
+        hint: "Action verbs / Imperatives (e.g., cutting, heating, combining)",
+        answers: [
+          { text: "Mix / Stir", points: 35, revealed: false, keywords: ["mix", "stir", "whisk", "blend"] },
+          { text: "Cut / Slice / Chop", points: 25, revealed: false, keywords: ["cut", "slice", "chop", "dice", "peel"] },
+          { text: "Pour", points: 18, revealed: false, keywords: ["pour", "add liquid", "drain"] },
+          { text: "Boil / Fry / Heat", points: 12, revealed: false, keywords: ["boil", "fry", "heat", "cook", "bake", "roast"] },
+          { text: "Add / Put", points: 10, revealed: false, keywords: ["add", "put", "insert", "combine"] }
+        ]
+      },
+      {
+        id: 2,
+        topic: "Narrative Text (Folk Tales & Legends)",
+        question: "We asked 100 students: Mention a typical character or creature that appears in Indonesian or global folk tales!",
+        hint: "Characters, royalty, antagonists or magical beings",
+        answers: [
+          { text: "King / Queen / Princess", points: 32, revealed: false, keywords: ["king", "queen", "princess", "prince", "royal"] },
+          { text: "Witch / Wizard", points: 24, revealed: false, keywords: ["witch", "wizard", "sorcerer", "magician", "fairy"] },
+          { text: "Giant / Ogre (Buto Ijo)", points: 18, revealed: false, keywords: ["giant", "ogre", "buto ijo", "monster"] },
+          { text: "Clever Animal (Kancil)", points: 14, revealed: false, keywords: ["animal", "mouse deer", "kancil", "monkey", "rabbit"] },
+          { text: "Dragon / Magical Serpent", points: 12, revealed: false, keywords: ["dragon", "naga", "snake", "serpent"] }
+        ]
+      },
+      {
+        id: 3,
+        topic: "Labels (Medicine & Food Packages)",
+        question: "We asked 100 students: What important information do you usually look for on a product or medicine label?",
+        hint: "Packaging details, safety warnings, and usage guide",
+        answers: [
+          { text: "Expiration date (Exp. date)", points: 38, revealed: false, keywords: ["expiration date", "expiry", "exp date", "expired", "best before"] },
+          { text: "Ingredients / Composition", points: 26, revealed: false, keywords: ["ingredients", "ingredient", "composition", "contents", "materials"] },
+          { text: "Dosage / Direction to use", points: 18, revealed: false, keywords: ["dosage", "direction", "how to use", "instructions", "dose"] },
+          { text: "Brand / Name of product", points: 11, revealed: false, keywords: ["brand", "name", "product name", "title"] },
+          { text: "Nutrition facts / Side effects", points: 7, revealed: false, keywords: ["nutrition", "calories", "side effect", "warning", "storage"] }
+        ]
+      },
+      {
+        id: 4,
+        topic: "Expressions of Hopes, Wishes & Congratulations",
+        question: "We asked 100 students: People usually say 'Congratulations!' when their friend gets or celebrates...",
+        hint: "Achievements, special milestones, or winning events",
+        answers: [
+          { text: "Winning a competition / contest", points: 40, revealed: false, keywords: ["winning", "win", "competition", "contest", "champion", "first place"] },
+          { text: "Graduation / Passing an exam", points: 28, revealed: false, keywords: ["graduation", "graduate", "passing exam", "pass", "exam", "test"] },
+          { text: "A birthday celebration", points: 16, revealed: false, keywords: ["birthday", "birth day", "bday"] },
+          { text: "A new job / Promotion / Trophy", points: 10, revealed: false, keywords: ["new job", "job", "promotion", "trophy", "medal"] },
+          { text: "A scholarship / Academic award", points: 6, revealed: false, keywords: ["scholarship", "award", "achievement"] }
+        ]
+      }
+    ];
+
+    /* ==========================================================================
+       3. STATE MANAGEMENT
+       ========================================================================== */
+    let currentRoundIndex = 0;
+    let scores = {
+      teamA: 0,
+      teamB: 0
+    };
+    let currentRoundAccumulator = 0;
+    let strikes = 0;
+
+    // DOM Elements
+    const roundIndicatorEl = document.getElementById('roundIndicator');
+    const questionTextEl = document.getElementById('questionText');
+    const questionHintEl = document.getElementById('questionHint');
+    const topicTagEl = document.getElementById('topicTag');
+    const cardsGridEl = document.getElementById('cardsGrid');
+    const roundScoreEl = document.getElementById('roundScore');
+    const scoreTeamAEl = document.getElementById('scoreTeamA');
+    const scoreTeamBEl = document.getElementById('scoreTeamB');
+    const strikeDot1 = document.getElementById('strikeDot1');
+    const strikeDot2 = document.getElementById('strikeDot2');
+    const strikeDot3 = document.getElementById('strikeDot3');
+    const strikeOverlay = document.getElementById('strikeOverlay');
+    const strikeGraphic = document.getElementById('strikeGraphic');
+    const guessForm = document.getElementById('guessForm');
+    const guessInput = document.getElementById('guessInput');
+
+    /* ==========================================================================
+       4. RENDER & BOARD LOGIC
+       ========================================================================== */
+    function renderRound() {
+      const currentRound = GAME_ROUNDS[currentRoundIndex];
+
+      // Update text labels
+      roundIndicatorEl.textContent = `ROUND ${currentRoundIndex + 1} OF ${GAME_ROUNDS.length}`;
+      questionTextEl.textContent = `"${currentRound.question.replace(/^We asked 100 students:\s*/i, '')}"`;
+      questionHintEl.textContent = `Focus: ${currentRound.hint}`;
+      topicTagEl.textContent = currentRound.topic;
+
+      // Calculate round points so far
+      currentRoundAccumulator = currentRound.answers
+        .filter(a => a.revealed)
+        .reduce((sum, a) => sum + a.points, 0);
+      roundScoreEl.textContent = currentRoundAccumulator;
+
+      // Render Cards
+      cardsGridEl.innerHTML = '';
+      currentRound.answers.forEach((ans, idx) => {
+        const cardWrapper = document.createElement('div');
+        cardWrapper.className = `perspective-1000 h-16 md:h-20 cursor-pointer ${ans.revealed ? 'card-flipped' : ''}`;
+        cardWrapper.setAttribute('onclick', `handleCardClick(${idx})`);
+        
+        cardWrapper.innerHTML = `
+          <div class="card-inner">
+            <!-- Front of Card (Covered / TV Number Display) -->
+            <div class="card-front bg-gradient-to-r from-blue-900 via-blue-950 to-slate-900 border-2 border-sky-500/50 flex items-center justify-between px-5 shadow-lg hover:border-amber-400 transition-colors">
+              <div class="w-10 h-10 rounded-full bg-blue-950 border-2 border-sky-400 flex items-center justify-center font-display font-black text-amber-300 text-lg shadow-inner">
+                ${idx + 1}
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-sky-400/40 text-xs tracking-widest uppercase font-semibold">Survey Answer</span>
+                <span class="w-2.5 h-2.5 rounded-full bg-sky-500/30"></span>
+              </div>
+            </div>
+
+            <!-- Back of Card (Revealed Answer + Points) -->
+            <div class="card-back bg-gradient-to-r from-slate-900 via-blue-950 to-indigo-950 border-2 border-amber-400 flex items-center justify-between px-5 shadow-xl">
+              <span class="text-base md:text-xl font-display font-bold text-white text-left tracking-wide truncate max-w-[70%]">
+                ${ans.text}
+              </span>
+              <div class="w-12 h-10 md:w-14 md:h-12 bg-amber-500 text-slate-950 font-display font-black text-xl md:text-2xl rounded-lg flex items-center justify-center shadow-lg shadow-amber-500/30 shrink-0">
+                ${ans.points}
+              </div>
+            </div>
+          </div>
+        `;
+        cardsGridEl.appendChild(cardWrapper);
+      });
+
+      updateStrikeDisplay();
+    }
+
+    // Direct card click reveal
+    window.handleCardClick = function(index) {
+      sound.init();
+      const currentRound = GAME_ROUNDS[currentRoundIndex];
+      const targetAnswer = currentRound.answers[index];
+
+      if (!targetAnswer.revealed) {
+        targetAnswer.revealed = true;
+        sound.playCorrect();
+        renderRound();
+      }
+    };
+
+    // Reveal all answers in the round
+    document.getElementById('revealAllBtn').addEventListener('click', () => {
+      sound.init();
+      sound.playFlip();
+      const currentRound = GAME_ROUNDS[currentRoundIndex];
+      currentRound.answers.forEach(a => a.revealed = true);
+      renderRound();
+    });
+
+    /* ==========================================================================
+       5. GUESS MATCHING ALGORITHM (Keywords & Synonyms)
+       ========================================================================== */
+    guessForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      sound.init();
+      const rawQuery = guessInput.value.trim().toLowerCase();
+      if (!rawQuery) return;
+
+      const currentRound = GAME_ROUNDS[currentRoundIndex];
+      let matchedIndex = -1;
+
+      // Search keyword matches
+      for (let i = 0; i < currentRound.answers.length; i++) {
+        const item = currentRound.answers[i];
+        if (item.revealed) continue; // Already opened
+
+        // Check if query is in keywords or partially matches
+        const isMatch = item.keywords.some(kw => {
+          return rawQuery.includes(kw) || kw.includes(rawQuery);
+        });
+
+        if (isMatch) {
+          matchedIndex = i;
+          break;
+        }
+      }
+
+      if (matchedIndex !== -1) {
+        // Correct Answer Found
+        currentRound.answers[matchedIndex].revealed = true;
+        sound.playCorrect();
+        renderRound();
+        guessInput.value = '';
+      } else {
+        // Wrong Guess -> Trigger Strike
+        triggerStrike();
+        guessInput.value = '';
+      }
+    });
+
+    /* ==========================================================================
+       6. STRIKE SYSTEM & TV ANIMATION
+       ========================================================================== */
+    function triggerStrike() {
+      sound.init();
+      sound.playStrike();
+      strikes = Math.min(3, strikes + 1);
+      updateStrikeDisplay();
+
+      // Show Fullscreen Strike Visual
+      strikeGraphic.innerHTML = '';
+      for (let i = 0; i < strikes; i++) {
+        strikeGraphic.innerHTML += `<span class="strike-anim inline-block">✕</span>`;
+      }
+      
+      strikeOverlay.classList.remove('opacity-0');
+      strikeOverlay.classList.add('opacity-100');
+
+      setTimeout(() => {
+        strikeOverlay.classList.remove('opacity-100');
+        strikeOverlay.classList.add('opacity-0');
+      }, 950);
+    }
+
+    function updateStrikeDisplay() {
+      const dots = [strikeDot1, strikeDot2, strikeDot3];
+      dots.forEach((dot, idx) => {
+        if (idx < strikes) {
+          dot.className = "text-xl font-display font-black text-rose-500 transition scale-110 drop-shadow-[0_0_8px_rgba(244,63,94,0.8)]";
+        } else {
+          dot.className = "text-xl font-display font-black text-slate-700 transition";
+        }
+      });
+    }
+
+    document.getElementById('addStrikeBtn').addEventListener('click', triggerStrike);
+
+    document.getElementById('clearStrikesBtn').addEventListener('click', () => {
+      sound.init();
+      sound.playFlip();
+      strikes = 0;
+      updateStrikeDisplay();
+    });
+
+    /* ==========================================================================
+       7. SCORING & ROUND PROGRESSION
+       ========================================================================== */
+    window.awardScore = function(teamKey) {
+      sound.init();
+      if (currentRoundAccumulator <= 0) return;
+
+      scores[teamKey] += currentRoundAccumulator;
+      sound.playFanfare();
+      updateScoreboardUI();
+
+      // Reset round score after awarding
+      currentRoundAccumulator = 0;
+      roundScoreEl.textContent = 0;
+    };
+
+    window.modifyScore = function(teamKey, amount) {
+      sound.init();
+      sound.playFlip();
+      scores[teamKey] = Math.max(0, scores[teamKey] + amount);
+      updateScoreboardUI();
+    };
+
+    function updateScoreboardUI() {
+      scoreTeamAEl.textContent = scores.teamA;
+      scoreTeamBEl.textContent = scores.teamB;
+    }
+
+    // Navigation Controls
+    document.getElementById('nextRoundBtn').addEventListener('click', () => {
+      sound.init();
+      sound.playFlip();
+      if (currentRoundIndex < GAME_ROUNDS.length - 1) {
+        currentRoundIndex++;
+        strikes = 0;
+        renderRound();
+      } else {
+        showVictoryScreen();
+      }
+    });
+
+    document.getElementById('prevRoundBtn').addEventListener('click', () => {
+      sound.init();
+      sound.playFlip();
+      if (currentRoundIndex > 0) {
+        currentRoundIndex--;
+        strikes = 0;
+        renderRound();
+      }
+    });
+
+    // Reset Game Entirely
+    document.getElementById('resetAllBtn').addEventListener('click', () => {
+      scores.teamA = 0;
+      scores.teamB = 0;
+      currentRoundIndex = 0;
+      strikes = 0;
+      GAME_ROUNDS.forEach(round => {
+        round.answers.forEach(a => a.revealed = false);
+      });
+      updateScoreboardUI();
+      renderRound();
+    });
+
+    /* ==========================================================================
+       8. VICTORY / SUMMARY MODAL
+       ========================================================================== */
+    function showVictoryScreen() {
+      sound.playFanfare();
+      const modal = document.getElementById('winnerModal');
+      const winnerText = document.getElementById('winnerText');
+      const finalScoreA = document.getElementById('finalScoreA');
+      const finalScoreB = document.getElementById('finalScoreB');
+
+      finalScoreA.textContent = scores.teamA;
+      finalScoreB.textContent = scores.teamB;
+
+      if (scores.teamA > scores.teamB) {
+        winnerText.textContent = "🏆 Team A (Eagle) Wins the Championship!";
+      } else if (scores.teamB > scores.teamA) {
+        winnerText.textContent = "🏆 Team B (Falcon) Wins the Championship!";
+      } else {
+        winnerText.textContent = "🤝 It's a Tie! Both Teams Played Exceptionally Well!";
+      }
+
+      modal.classList.remove('hidden');
+    }
+
+    window.closeWinnerModal = function() {
+      document.getElementById('winnerModal').classList.add('hidden');
+    };
+
+    /* ==========================================================================
+       9. FULLSCREEN TOGGLE
+       ========================================================================== */
+    document.getElementById('toggleFullscreenBtn').addEventListener('click', () => {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => {
+          console.warn(`Fullscreen error: ${err.message}`);
+        });
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+      }
+    });
+
+    /* Initialize game on window load */
+    window.onload = function() {
+      renderRound();
+      updateScoreboardUI();
+    };
+  </script>
+</body>
+</html>
