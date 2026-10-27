@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Misi Rel Dimensi: Ekspedisi Pecahan Kristal</title>
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            steampunk: {
+              brass: '#D97706',
+              bronze: '#92400E',
+              dark: '#1E1B4B',
+              night: '#0F172A',
+              glow: '#38BDF8',
+              crystal: '#A855F7',
+              success: '#10B981',
+              danger: '#EF4444'
+            }
+          },
+          animation: {
+            'float': 'float 3s ease-in-out infinite',
+            'pulse-fast': 'pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'train-chug': 'chug 0.8s ease-in-out infinite alternate',
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-6px)' },
+            },
+            chug: {
+              '0%': { transform: 'translateY(0px) rotate(0deg)' },
+              '100%': { transform: 'translateY(-3px) rotate(1deg)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Outfit:wght@400;600;800&display=swap');
+    body {
+      font-family: 'Outfit', sans-serif;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+    }
+    .font-kids {
+      font-family: 'Fredoka', cursive, sans-serif;
+    }
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.6);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #4B5563;
+      border-radius: 4px;
+    }
+    .track-shadow {
+      filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between overflow-x-hidden transition-colors duration-300">
+
+  <!-- ========================================== -->
+  <!-- MODAL / DRAWER: BUKU CATATAN MASINIS (TPACK) -->
+  <!-- ========================================== -->
+  <div id="handbookModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+    <div class="bg-slate-900 border-2 border-amber-500 rounded-3xl max-w-2xl w-full max-h-[90vh] flex flex-col overflow-hidden shadow-2xl">
+      <div class="bg-gradient-to-r from-amber-700 to-amber-600 px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <svg class="w-8 h-8 text-amber-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+          </svg>
+          <h2 class="text-xl md:text-2xl font-kids font-bold text-white tracking-wide">Buku Catatan Masinis Kibo</h2>
+        </div>
+        <button onclick="toggleModal('handbookModal')" class="text-amber-200 hover:text-white text-3xl font-bold leading-none">&times;</button>
+      </div>
+
+      <div class="p-6 overflow-y-auto space-y-6 text-slate-200 leading-relaxed font-sans">
+        <div class="bg-slate-800/80 p-4 rounded-2xl border border-slate-700">
+          <h3 class="text-lg font-bold text-amber-400 mb-2 font-kids">âœ¨ Rahasia Rel Pecahan Senilai</h3>
+          <p class="text-sm text-slate-300">
+            Dua pecahan disebut <span class="text-amber-400 font-bold">senilai</span> apabila memiliki nilai panjang yang sama, meskipun angka pembilang dan penyebutnya berbeda!
+          </p>
+          <div class="mt-4 grid grid-cols-1 gap-2 bg-slate-900 p-3 rounded-xl border border-slate-700">
+            <div class="flex items-center gap-2">
+              <span class="w-16 font-bold text-xs text-sky-400">1 / 2</span>
+              <div class="h-6 bg-sky-500 rounded-md flex-1 flex items-center justify-center text-xs font-bold text-black">Setengah Rel (1/2)</div>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="w-16 font-bold text-xs text-emerald-400">2 / 4</span>
+              <div class="flex-1 flex gap-1 h-6">
+                <div class="w-1/2 bg-emerald-500 rounded-md flex items-center justify-center text-xs font-bold text-black">1/4</div>
+                <div class="w-1/2 bg-emerald-500 rounded-md flex items-center justify-center text-xs font-bold text-black">1/4</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="w-16 font-bold text-xs text-purple-400">4 / 8</span>
+              <div class="flex-1 flex gap-1 h-6">
+                <div class="w-1/4 bg-purple-500 rounded-md flex items-center justify-center text-[10px] font-bold text-white">1/8</div>
+                <div class="w-1/4 bg-purple-500 rounded-md flex items-center justify-center text-[10px] font-bold text-white">1/8</div>
+                <div class="w-1/4 bg-purple-500 rounded-md flex items-center justify-center text-[10px] font-bold text-white">1/8</div>
+                <div class="w-1/4 bg-purple-500 rounded-md flex items-center justify-center text-[10px] font-bold text-white">1/8</div>
+              </div>
+            </div>
+          </div>
+          <p class="text-xs text-amber-300 mt-2 font-semibold">
+            ðŸ” Kesimpulan Kibo: 1/2 panjangnya sama persis dengan 2/4 dan 4/8!
+          </p>
+        </div>
+
+        <div class="bg-slate-800/80 p-4 rounded-2xl border border-slate-700">
+          <h3 class="text-lg font-bold text-amber-400 mb-2 font-kids">ðŸš‚ Aturan Main Tim Kelas</h3>
+          <ol class="list-decimal list-inside text-sm space-y-1 text-slate-300">
+            <li>Perhatikan <span class="text-cyan-400 font-bold">Target Panjang Jurang Rel</span> di layar proyektor.</li>
+            <li>Secara bergiliran atau berembuk, masukkan pecahan rel yang pas.</li>
+            <li>Jika kepanjangan (<span class="text-rose-400 font-bold">Overshoot</span>), kereta akan anjlok! Gunakan tombol Cabut Rel.</li>
+            <li>Jika pas tepat 100%, Kereta Dimensi akan meluncur melintasi angkasa!</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="bg-slate-900 p-4 border-t border-slate-800 flex justify-end">
+        <button onclick="toggleModal('handbookModal')" class="px-6 py-2.5 bg-amber-600 hover:bg-amber-500 text-slate-900 font-bold rounded-xl transition-all">
+          Mengerti, Siap Masinis!
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- ZONA 1: TOP HUD / TELEMETRY BAR            -->
+  <!-- ========================================== -->
+  <header class="bg-slate-900/90 border-b border-amber-600/40 backdrop-blur px-4 py-2.5 sticky top-0 z-40 shadow-xl">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+      
+      <!-- Logo & Title -->
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-amber-600 to-yellow-400 flex items-center justify-center shadow-lg shadow-amber-500/20">
+          <svg class="w-6 h-6 text-slate-950" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2L4 6v12l8 4 8-4V6l-8-4zm0 2.2l6 3v9.6l-6 3-6-3V7.2l6-3z"/>
+            <path d="M12 7l4 2v6l-4 2-4-2V9l4-2z"/>
+          </svg>
+        </div>
+        <div>
+          <h1 class="text-lg md:text-xl font-bold font-kids tracking-wide text-amber-400 flex items-center gap-2">
+            Misi Rel Dimensi
+            <span class="text-[10px] bg-amber-500/20 text-amber-300 border border-amber-500/40 px-2 py-0.5 rounded-full font-sans uppercase">SD Kelas 4</span>
+          </h1>
+          <p class="text-xs text-slate-400 hidden sm:block">Laboratorium & Petualangan Pecahan Senilai</p>
+        </div>
+      </div>
+
+      <!-- Mode Selector Switch -->
+      <div class="flex bg-slate-950 p-1 rounded-2xl border border-slate-800">
+        <button id="modeClassBtn" onclick="switchMode('class')" class="px-3.5 py-1.5 rounded-xl text-xs md:text-sm font-bold transition-all bg-amber-500 text-slate-950 shadow-md">
+          ðŸ† Misi Kelas (Kelompok)
+        </button>
+        <button id="modeSandboxBtn" onclick="switchMode('sandbox')" class="px-3.5 py-1.5 rounded-xl text-xs md:text-sm font-bold text-slate-400 hover:text-white transition-all">
+          ðŸ§ª Lab Sandbox Mandiri
+        </button>
+      </div>
+
+      <!-- Global Controls (Sound, Handbook, Projector Contrast) -->
+      <div class="flex items-center gap-2">
+        <button id="audioToggleBtn" onclick="toggleSound()" class="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition" title="Suara FX">
+          <svg id="audioIconOn" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path>
+          </svg>
+          <svg id="audioIconOff" class="w-5 h-5 hidden text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15zM17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"></path>
+          </svg>
+        </button>
+
+        <button onclick="toggleProjectorMode()" class="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-300 border border-slate-700 transition text-xs font-bold" title="Mode Kontras Proyektor">
+          ðŸ“½ï¸ Proyektor
+        </button>
+
+        <button onclick="toggleModal('handbookModal')" class="px-3 py-2 rounded-xl bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white font-bold text-xs flex items-center gap-1.5 shadow-md">
+          <span>ðŸ“– Panduan</span>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Telemetry Status Bar for Active Challenge -->
+    <div id="telemetryStrip" class="max-w-7xl mx-auto mt-2 pt-2 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-3 text-xs">
+      <!-- Target & Real-time Fraction Readout -->
+      <div class="flex items-center gap-4">
+        <div class="flex items-center gap-1.5 bg-slate-950 px-3 py-1 rounded-lg border border-slate-800">
+          <span class="text-slate-400">Target Jurang:</span>
+          <span id="targetFractionLabel" class="font-bold text-amber-400 text-sm font-kids">3/4 Meter</span>
+        </div>
+        <div class="flex items-center gap-1.5 bg-slate-950 px-3 py-1 rounded-lg border border-slate-800">
+          <span class="text-slate-400">Terpasang:</span>
+          <span id="currentFractionLabel" class="font-bold text-sky-400 text-sm font-kids">0 / 4</span>
+          <span id="currentDecimalLabel" class="text-slate-400 text-[10px]">(0.00m)</span>
+        </div>
+      </div>
+
+      <!-- Turn Indicator for Teams -->
+      <div id="teamTurnIndicator" class="flex items-center gap-2">
+        <span class="text-slate-400">Giliran Kelompok:</span>
+        <div id="activeTeamBadge" class="flex items-center gap-1.5 bg-blue-600/30 border border-blue-500 text-blue-300 px-3 py-0.5 rounded-full font-bold">
+          <span class="w-2.5 h-2.5 rounded-full bg-blue-400 animate-pulse"></span>
+          <span id="activeTeamName">Tim Biru (Spesialis 1/2 & 1/4)</span>
+        </div>
+      </div>
+
+      <!-- Quick Reset & Action -->
+      <div class="flex items-center gap-2">
+        <button onclick="undoLastTrack()" class="px-2.5 py-1 rounded-lg bg-rose-950/60 hover:bg-rose-900 text-rose-300 border border-rose-800 text-xs font-semibold flex items-center gap-1">
+          â†©ï¸ Cabut Rel Terakhir
+        </button>
+        <button onclick="clearAllTracks()" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs">
+          Kosongkan
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================== -->
+  <!-- MAIN WORKSPACE                             -->
+  <!-- ========================================== -->
+  <main class="max-w-7xl mx-auto w-full p-4 flex-1 flex flex-col gap-4">
+
+    <!-- TEAM SELECTOR STRIP (Class Mode) -->
+    <div id="classTeamStrip" class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+      <button onclick="selectTeam(0)" id="teamTab0" class="team-tab p-2 rounded-2xl border-2 border-blue-500 bg-blue-950/40 text-left transition relative overflow-hidden ring-2 ring-blue-500">
+        <div class="flex items-center justify-between">
+          <span class="font-kids font-bold text-blue-300 text-sm">Tim 1: Biru</span>
+          <span class="text-xs font-mono bg-blue-900/80 px-2 py-0.5 rounded-full text-blue-200">1/2 & 1/4</span>
+        </div>
+        <div class="text-[11px] text-slate-400 mt-1">Pecahan Bilangan Genap</div>
+      </button>
+
+      <button onclick="selectTeam(1)" id="teamTab1" class="team-tab p-2 rounded-2xl border border-slate-800 bg-slate-900/60 text-left transition hover:border-emerald-500">
+        <div class="flex items-center justify-between">
+          <span class="font-kids font-bold text-emerald-300 text-sm">Tim 2: Hijau</span>
+          <span class="text-xs font-mono bg-emerald-900/80 px-2 py-0.5 rounded-full text-emerald-200">1/8 Rel</span>
+        </div>
+        <div class="text-[11px] text-slate-400 mt-1">Spesialis Pecahan Mikro</div>
+      </button>
+
+      <button onclick="selectTeam(2)" id="teamTab2" class="team-tab p-2 rounded-2xl border border-slate-800 bg-slate-900/60 text-left transition hover:border-amber-500">
+        <div class="flex items-center justify-between">
+          <span class="font-kids font-bold text-amber-300 text-sm">Tim 3: Kuning</span>
+          <span class="text-xs font-mono bg-amber-900/80 px-2 py-0.5 rounded-full text-amber-200">1/3 & 1/6</span>
+        </div>
+        <div class="text-[11px] text-slate-400 mt-1">Divisi Pecahan Ganjil</div>
+      </button>
+
+      <button onclick="selectTeam(3)" id="teamTab3" class="team-tab p-2 rounded-2xl border border-slate-800 bg-slate-900/60 text-left transition hover:border-purple-500">
+        <div class="flex items-center justify-between">
+          <span class="font-kids font-bold text-purple-300 text-sm">Tim 4: Ungu</span>
+          <span class="text-xs font-mono bg-purple-900/80 px-2 py-0.5 rounded-full text-purple-200">1/12 Presisi</span>
+        </div>
+        <div class="text-[11px] text-slate-400 mt-1">Kristal Dimensi Halus</div>
+      </button>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- ZONA 2: THE INTERACTIVE CANVAS (SVG CORE)  -->
+    <!-- ========================================== -->
+    <div class="relative bg-slate-900 border-2 border-slate-700/80 rounded-3xl p-4 md:p-6 shadow-2xl overflow-hidden flex flex-col justify-between min-h-[360px]">
+      
+      <!-- Background Dimension Sky & Stars Pattern -->
+      <div class="absolute inset-0 opacity-25 pointer-events-none bg-[radial-gradient(#38bdf8_1px,transparent_1px)] [background-size:24px_24px]"></div>
+
+      <!-- Top Canvas Information -->
+      <div class="relative z-10 flex flex-wrap items-center justify-between gap-2 pb-2">
+        <div class="flex items-center gap-2">
+          <span class="text-xs uppercase tracking-wider text-amber-400/90 font-bold flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+            Jurang Dimensi Quantum
+          </span>
+          <span id="levelBadge" class="bg-slate-800 text-slate-300 text-xs px-2.5 py-0.5 rounded-full font-mono border border-slate-700">Misi #1</span>
+        </div>
+
+        <!-- Level Quick Selector (for Teacher) -->
+        <div class="flex items-center gap-1 bg-slate-950/80 px-2 py-1 rounded-xl border border-slate-800 text-xs">
+          <span class="text-slate-400 mr-1 hidden sm:inline">Pilih Misi:</span>
+          <button onclick="loadMission(0)" class="mission-btn px-2 py-0.5 rounded bg-amber-500 text-black font-bold">1</button>
+          <button onclick="loadMission(1)" class="mission-btn px-2 py-0.5 rounded hover:bg-slate-800 text-slate-300">2</button>
+          <button onclick="loadMission(2)" class="mission-btn px-2 py-0.5 rounded hover:bg-slate-800 text-slate-300">3</button>
+          <button onclick="loadMission(3)" class="mission-btn px-2 py-0.5 rounded hover:bg-slate-800 text-slate-300">4</button>
+          <button onclick="loadMission(4)" class="mission-btn px-2 py-0.5 rounded hover:bg-slate-800 text-slate-300">5</button>
+        </div>
+      </div>
+
+      <!-- SVG DYNAMIC CANVAS -->
+      <div class="relative w-full my-auto py-2">
+        <svg id="dimensionCanvas" viewBox="0 0 1000 320" class="w-full h-auto max-h-[340px] overflow-visible track-shadow">
+          <defs>
+            <!-- Glowing Gradients -->
+            <linearGradient id="cliffGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#334155"/>
+              <stop offset="100%" stop-color="#0F172A"/>
+            </linearGradient>
+            <linearGradient id="crystalGlow" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#38BDF8"/>
+              <stop offset="50%" stop-color="#818CF8"/>
+              <stop offset="100%" stop-color="#C084FC"/>
+            </linearGradient>
+            <linearGradient id="targetBeam" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#F59E0B" stop-opacity="0.3"/>
+              <stop offset="100%" stop-color="#F59E0B" stop-opacity="0.0"/>
+            </linearGradient>
+            <!-- Track Filter Glow -->
+            <filter id="neonGlow" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="4" result="blur" />
+              <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+            </filter>
+          </defs>
+
+          <!-- Left Cliff (Station Departure) -->
+          <path d="M 0 180 L 150 180 L 165 320 L 0 320 Z" fill="url(#cliffGrad)" stroke="#475569" stroke-width="2"/>
+          <line x1="0" y1="180" x2="150" y2="180" stroke="#F59E0B" stroke-width="4"/>
+          <!-- Departure Flag / Signal Tower -->
+          <g transform="translate(40, 100)">
+            <rect x="0" y="0" width="6" height="80" fill="#94A3B8"/>
+            <circle cx="3" cy="0" r="10" fill="#10B981" class="animate-pulse"/>
+            <text x="18" y="5" fill="#94A3B8" font-size="12" font-weight="bold">START (0m)</text>
+          </g>
+
+          <!-- Right Cliff (Island Destination) -->
+          <path d="M 850 180 L 1000 180 L 1000 320 L 835 320 Z" fill="url(#cliffGrad)" stroke="#475569" stroke-width="2"/>
+          <line x1="850" y1="180" x2="1000" y2="180" stroke="#F59E0B" stroke-width="4"/>
+          <!-- Crystal Portal at destination -->
+          <g id="destinationPortal" transform="translate(860, 90)">
+            <ellipse cx="40" cy="50" rx="30" ry="45" fill="none" stroke="#38BDF8" stroke-width="3" stroke-dasharray="6,4" class="animate-spin" style="transform-origin: 40px 50px; animation-duration: 10s;"/>
+            <polygon points="40,25 55,50 40,75 25,50" fill="#C084FC" opacity="0.9"/>
+            <text x="10" y="-10" fill="#38BDF8" font-size="12" font-weight="bold">PORTAL TARGET</text>
+          </g>
+
+          <!-- Chasm Bottom Abyss Graphics -->
+          <g opacity="0.4">
+            <path d="M 150 290 Q 500 330 850 290" fill="none" stroke="#6366F1" stroke-width="2" stroke-dasharray="5,5"/>
+            <circle cx="320" cy="270" r="15" fill="#38BDF8" opacity="0.2" class="animate-float"/>
+            <circle cx="680" cy="250" r="22" fill="#A855F7" opacity="0.2" class="animate-float" style="animation-delay: 1.5s;"/>
+          </g>
+
+          <!-- THE CHASM BRIDGE SPAN (Normalized width = 700px, representing the Max Track Length of 1.5m or 1m) -->
+          <!-- Base Guideline (Dotted) -->
+          <line x1="150" y1="180" x2="850" y2="180" stroke="#334155" stroke-width="4" stroke-dasharray="8,6"/>
+          
+          <!-- Tick-marks for Denominators (Halves, Quarters, Eighths) -->
+          <g id="rulerTicks" opacity="0.75">
+            <!-- Dynamically populated or fixed ticks for 1 Full Unit (1 Unit = 560px for standard 1.0m, or scaled) -->
+          </g>
+
+          <!-- Dynamic Target Length Zone Indicator -->
+          <rect id="targetAreaRect" x="150" y="140" width="420" height="40" fill="url(#targetBeam)" rx="6"/>
+          <line id="targetLine" x1="570" y1="130" x2="570" y2="210" stroke="#F59E0B" stroke-width="4" stroke-dasharray="4,2"/>
+          <g id="targetFlag" transform="translate(570, 115)">
+            <polygon points="0,0 35,-12 0,-24" fill="#F59E0B"/>
+            <text id="targetFlagText" x="6" y="-12" fill="#000" font-size="10" font-weight="bold">3/4</text>
+          </g>
+
+          <!-- Placed Tracks Group -->
+          <g id="tracksContainer">
+            <!-- Dynamic Track Pieces rendered by JS -->
+          </g>
+
+          <!-- Animated Steam / Dimension Train Engine -->
+          <g id="trainEngine" transform="translate(20, 100)" class="transition-transform duration-700 ease-out">
+            <!-- Steampunk Locomotive SVG -->
+            <!-- Train Body -->
+            <rect x="0" y="25" width="110" height="50" rx="8" fill="#1E293B" stroke="#D97706" stroke-width="2.5"/>
+            <!-- Cab Window -->
+            <rect x="15" y="32" width="28" height="22" rx="4" fill="#38BDF8" opacity="0.9"/>
+            <!-- Boiler / Energy Tank -->
+            <ellipse cx="75" cy="50" rx="25" ry="18" fill="#B45309"/>
+            <path d="M 60 40 L 90 40 L 90 60 L 60 60 Z" fill="#F59E0B" opacity="0.6"/>
+            <!-- Chimney with animated steam -->
+            <rect x="85" y="10" width="14" height="20" fill="#475569" stroke="#94A3B8" stroke-width="1.5"/>
+            <polygon points="80,10 104,10 99,15 85,15" fill="#64748B"/>
+            <!-- Steam Puffs -->
+            <g id="steamParticles" class="animate-bounce" style="animation-duration: 2s;">
+              <circle cx="92" cy="0" r="5" fill="#E2E8F0" opacity="0.7"/>
+              <circle cx="102" cy="-10" r="8" fill="#CBD5E1" opacity="0.5"/>
+            </g>
+            <!-- Wheels -->
+            <circle cx="25" cy="75" r="14" fill="#0F172A" stroke="#F59E0B" stroke-width="3"/>
+            <circle cx="25" cy="75" r="5" fill="#D97706"/>
+            <circle cx="60" cy="75" r="14" fill="#0F172A" stroke="#F59E0B" stroke-width="3"/>
+            <circle cx="60" cy="75" r="5" fill="#D97706"/>
+            <circle cx="95" cy="75" r="14" fill="#0F172A" stroke="#F59E0B" stroke-width="3"/>
+            <circle cx="95" cy="75" r="5" fill="#D97706"/>
+            <!-- Connecting rod -->
+            <line x1="25" y1="75" x2="95" y2="75" stroke="#CBD5E1" stroke-width="3"/>
+            <!-- Cowcatcher / Bumper -->
+            <polygon points="110,65 125,78 110,78" fill="#D97706"/>
+            <!-- Headlight Beam -->
+            <polygon points="112,42 160,25 160,65" fill="#FEF08A" opacity="0.25"/>
+          </g>
+
+          <!-- Victory Success Effect Fireworks (hidden by default) -->
+          <g id="victoryStars" opacity="0" class="transition-opacity duration-500">
+            <text x="500" y="80" fill="#34D399" font-size="28" font-family="'Fredoka', sans-serif" font-weight="bold" text-anchor="middle" filter="url(#neonGlow)">
+              ðŸŒŸ REL TEPAT SEMPURNA! KERETA MELUNCUR! ðŸš‚âœ¨
+            </text>
+          </g>
+        </svg>
+      </div>
+
+      <!-- Live Alignment Comparison Bar (Visual Equivalence helper) -->
+      <div class="relative z-10 bg-slate-950/90 rounded-2xl p-3 border border-slate-800 flex flex-col md:flex-row items-center justify-between gap-3 text-xs">
+        <div class="flex items-center gap-2">
+          <span class="font-bold text-amber-400">ðŸ“ Radar Penjajaran Senilai:</span>
+          <span id="alignmentFeedback" class="text-slate-300">Pasang pecahan rel untuk menguji kecocokan dengan jurang.</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="flex items-center gap-1.5">
+            <span class="w-3 h-3 rounded-full bg-sky-500"></span>
+            <span class="text-[11px] text-slate-400">Pas</span>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <span class="w-3 h-3 rounded-full bg-rose-500"></span>
+            <span class="text-[11px] text-slate-400">Kelebihan</span>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <span class="w-3 h-3 rounded-full bg-amber-500"></span>
+            <span class="text-[11px] text-slate-400">Kurang</span>
+          </div>
+          <button id="testTrainRunBtn" onclick="testTrainDrive()" class="ml-2 px-4 py-1.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-slate-950 font-extrabold text-xs shadow-lg shadow-emerald-500/20 active:scale-95 transition">
+            â–¶ï¸ Luncurkan Kereta!
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ========================================== -->
+    <!-- ZONA 3: CONTROL DECK & SOCRATIC ASSISTANT  -->
+    <!-- ========================================== -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+      
+      <!-- Interactive Rel Fraction Dispensers (2 Cols) -->
+      <div class="lg:col-span-2 bg-slate-900 border border-slate-800 rounded-3xl p-4 md:p-5 flex flex-col justify-between shadow-xl">
+        <div>
+          <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center gap-2">
+              <span class="text-base font-bold font-kids text-amber-400">ðŸ”§ Depo Cetakan Rel Dimensi</span>
+              <span class="text-[11px] text-slate-400 bg-slate-800 px-2.5 py-0.5 rounded-full">Klik untuk Menyambung Rel</span>
+            </div>
+            <span id="inventoryTeamTag" class="text-xs font-bold text-blue-400">Pabrik Tim 1</span>
+          </div>
+
+          <!-- Fraction Module Buttons Grid -->
+          <div id="fractionButtonsContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2.5">
+            <!-- Injected by JavaScript depending on active team or free mode -->
+          </div>
+        </div>
+
+        <!-- Equivalence Quick Playground (Sandbox Utility inside Control Deck) -->
+        <div class="mt-4 pt-3 border-t border-slate-800 flex flex-wrap items-center justify-between gap-2 text-xs">
+          <div class="flex items-center gap-2 text-slate-400">
+            <span>ðŸ’¡ Tips Masinis:</span>
+            <span id="fractionTip" class="text-amber-300 font-semibold">1/2 rel nilainya sama dengan 2 keping rel 1/4!</span>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <button onclick="demonstrateEquivalence('1/2', '2/4')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 rounded text-slate-300 transition">
+              Bandingkan 1/2 & 2/4
+            </button>
+            <button onclick="demonstrateEquivalence('1/4', '2/8')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 rounded text-slate-300 transition">
+              Bandingkan 1/4 & 2/8
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Socratic Dialogue Box (Robot Masinis Kibo) (1 Col) -->
+      <div class="bg-gradient-to-b from-slate-900 to-indigo-950/60 border-2 border-indigo-500/40 rounded-3xl p-4 flex flex-col justify-between shadow-xl relative overflow-hidden">
+        
+        <div class="flex items-start gap-3">
+          <!-- Animated Inline SVG Avatar: Kibo Robot -->
+          <div class="w-16 h-16 flex-shrink-0 relative">
+            <svg viewBox="0 0 100 100" class="w-full h-full animate-float">
+              <!-- Robot Antenna -->
+              <line x1="50" y1="18" x2="50" y2="4" stroke="#F59E0B" stroke-width="4"/>
+              <circle cx="50" cy="4" r="5" fill="#38BDF8" class="animate-pulse"/>
+              <!-- Robot Head -->
+              <rect x="20" y="18" width="60" height="50" rx="14" fill="#1E293B" stroke="#38BDF8" stroke-width="3"/>
+              <!-- Screen Visor -->
+              <rect x="28" y="28" width="44" height="24" rx="8" fill="#0F172A"/>
+              <!-- Animated Eyes -->
+              <circle id="kiboEyeL" cx="40" cy="40" r="5" fill="#38BDF8" class="animate-pulse"/>
+              <circle id="kiboEyeR" cx="60" cy="40" r="5" fill="#38BDF8" class="animate-pulse"/>
+              <!-- Smile / Speaker -->
+              <path d="M 42 60 Q 50 66 58 60" fill="none" stroke="#F59E0B" stroke-width="2.5" stroke-linecap="round"/>
+              <!-- Cap/Masinis Hat -->
+              <path d="M 16 22 Q 50 4 84 22 Z" fill="#B45309"/>
+              <rect x="26" y="20" width="48" height="5" fill="#F59E0B"/>
+            </svg>
+          </div>
+
+          <!-- Speech Bubble Header -->
+          <div class="flex-1">
+            <div class="flex items-center justify-between">
+              <h4 class="font-kids font-bold text-sky-400 text-sm">Kibo Sang Masinis</h4>
+              <span class="text-[10px] bg-sky-500/20 text-sky-300 px-2 py-0.5 rounded-full border border-sky-500/30">Asisten Sokratik</span>
+            </div>
+            <p class="text-[11px] text-slate-400">Pemandu Logika & Refleksi</p>
+          </div>
+        </div>
+
+        <!-- Socratic Message Body -->
+        <div class="my-3 bg-slate-950/80 rounded-2xl p-3.5 border border-indigo-900/60 flex-1 flex items-center">
+          <p id="socraticSpeech" class="text-xs md:text-sm text-indigo-100 leading-relaxed font-sans italic">
+            "Halo kapten masinis cilik! Target jurang kita sudah terlihat di radar. Kira-kira keping pecahan mana yang jika digabung bisa pas menutup celah tersebut?"
+          </p>
+        </div>
+
+        <!-- Question Prompt Action -->
+        <button onclick="askKiboHint()" class="w-full py-2 bg-indigo-600/40 hover:bg-indigo-600/60 border border-indigo-500/50 rounded-xl text-indigo-200 text-xs font-bold transition flex items-center justify-center gap-1.5">
+          <svg class="w-4 h-4 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M10 2a6 6 0 00-6 6c0 1.887.87 3.565 2.228 4.673.344.28.572.703.572 1.157V15a2 2 0 002 2h2a2 2 0 002-2v-1.17c0-.454.228-.877.572-1.157A5.986 5.986 0 0016 8a6 6 0 00-6-6zm-1 16a1 1 0 102 0v-1h-2v1z"></path>
+          </svg>
+          Minta Pertanyaan Pemantik Kibo
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- Free Sandbox Denominator Multi-Slice Expander (Shown in Sandbox Mode) -->
+    <div id="sandboxExtraDeck" class="hidden bg-slate-900 border border-slate-800 rounded-3xl p-5 shadow-xl">
+      <div class="flex flex-wrap items-center justify-between gap-4 mb-4">
+        <div>
+          <h3 class="font-kids font-bold text-amber-400 text-base">ðŸ”¬ Mesin Irisan Pecahan Dinamis</h3>
+          <p class="text-xs text-slate-400">Ubah pembagi irisan (Penyebut) secara langsung untuk melihat mutasi visual!</p>
+        </div>
+        <div class="flex items-center gap-4">
+          <label class="text-xs text-slate-300 flex items-center gap-2">
+            Penyebut (Potongan):
+            <input id="sliceSlider" type="range" min="1" max="12" value="4" oninput="updateSandboxSlider(this.value)" class="accent-amber-500 w-32 cursor-pointer">
+            <span id="sliceSliderVal" class="font-bold text-amber-400 font-mono text-sm w-6">4</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Live interactive dynamic slice bar -->
+      <div id="sandboxSliceVisualizer" class="w-full bg-slate-950 p-3 rounded-2xl border border-slate-800 flex gap-1 h-14 items-center">
+        <!-- Rendered dynamically -->
+      </div>
+      <div class="flex justify-between text-[11px] text-slate-500 mt-1 px-1">
+        <span>0 (Awal)</span>
+        <span id="sandboxSliceEquation" class="text-sky-400 font-bold">1 Bagian Utuh terbagi menjadi 4 bagian sama besar (tiap bilah = 1/4)</span>
+        <span>1 (Penuh)</span>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ========================================== -->
+  <!-- FOOTER                                     -->
+  <!-- ========================================== -->
+  <footer class="bg-slate-950/80 border-t border-slate-900 py-2.5 px-4 text-center text-xs text-slate-500">
+    <p>Media Pembelajaran Interaktif (MPI) Tematik Matematika â€¢ TPACK Framework â€¢ Tanpa Ketergantungan Eksternal</p>
+  </footer>
+
+  <!-- ========================================== -->
+  <!-- JAVASCRIPT STATE ENGINE & AUDIO SYNTHESIS  -->
+  <!-- ========================================== -->
+  <script>
+    /* ============================================================
+       1. WEB AUDIO SYNTHESIZER (Zero external MP3 files needed)
+       ============================================================ */
+    class SoundEngine {
+      constructor() {
+        this.ctx = null;
+        this.enabled = true;
+      }
+
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          this.ctx = new AudioContext();
+        }
+        if (this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      }
+
+      playClick() {
+        if (!this.enabled) return;
+        this.init();
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(600, this.ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(800, this.ctx.currentTime + 0.05);
+        gain.gain.setValueAtTime(0.15, this.ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.05);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(this.ctx.currentTime + 0.06);
+      }
+
+      playAddTrack(fractionValue) {
+        if (!this.enabled) return;
+        this.init();
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'triangle';
+        // Base note depends on fraction size
+        const baseFreq = 261.63 + (fractionValue * 300); // C4 ascending
+        osc.frequency.setValueAtTime(baseFreq, this.ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(baseFreq * 1.5, this.ctx.currentTime + 0.12);
+        gain.gain.setValueAtTime(0.2, this.ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.15);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(this.ctx.currentTime + 0.15);
+      }
+
+      playWhistle() {
+        if (!this.enabled) return;
+        this.init();
+        const now = this.ctx.currentTime;
+        const osc1 = this.ctx.createOscillator();
+        const osc2 = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+
+        osc1.type = 'sawtooth';
+        osc2.type = 'triangle';
+
+        // Steampunk train dual tone
+        osc1.frequency.setValueAtTime(659.25, now); // E5
+        osc2.frequency.setValueAtTime(880, now);    // A5
+
+        gain.gain.setValueAtTime(0.01, now);
+        gain.gain.linearRampToValueAtTime(0.25, now + 0.1);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.8);
+
+        osc1.connect(gain);
+        osc2.connect(gain);
+        gain.connect(this.ctx.destination);
+
+        osc1.start(now);
+        osc2.start(now);
+        osc1.stop(now + 0.8);
+        osc2.stop(now + 0.8);
+      }
+
+      playSuccessFanfare() {
+        if (!this.enabled) return;
+        this.init();
+        const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+        notes.forEach((freq, idx) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, this.ctx.currentTime + idx * 0.12);
+          gain.gain.setValueAtTime(0.2, this.ctx.currentTime + idx * 0.12);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + idx * 0.12 + 0.35);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(this.ctx.currentTime + idx * 0.12);
+          osc.stop(this.ctx.currentTime + idx * 0.12 + 0.4);
+        });
+      }
+
+      playErrorBuzzer() {
+        if (!this.enabled) return;
+        this.init();
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(150, this.ctx.currentTime);
+        osc.frequency.setValueAtTime(110, this.ctx.currentTime + 0.15);
+        gain.gain.setValueAtTime(0.2, this.ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.3);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(this.ctx.currentTime + 0.32);
+      }
+    }
+
+    const sound = new SoundEngine();
+
+    /* ============================================================
+       2. FRACTION & GAME RECONCILIATION DATA
+       ============================================================ */
+    // Missions defined with target fractions
+    const MISSIONS = [
+      {
+        id: 1,
+        title: "Jurang Lembah Biru",
+        targetNumerator: 3,
+        targetDenominator: 4,
+        targetDec: 0.75,
+        targetLabel: "3/4 Meter",
+        hint: "Bisa dicapai dengan pecahan 1/2 + 1/4, atau tiga potong 1/4, atau enam potong 1/8!"
+      },
+      {
+        id: 2,
+        title: "Celah Kristal Senilai",
+        targetNumerator: 1,
+        targetDenominator: 2,
+        targetDec: 0.50,
+        targetLabel: "1/2 Meter",
+        hint: "Coba pasang 2 keping 1/4 atau 4 keping 1/8! Apakah panjangnya setara?"
+      },
+      {
+        id: 3,
+        title: "Jembatan Triniti Tiga Dimensi",
+        targetNumerator: 2,
+        targetDenominator: 3,
+        targetDec: 0.6667,
+        targetLabel: "2/3 Meter",
+        hint: "Panggil Tim Kuning! Dua keping 1/3 atau empat keping 1/6 akan membentuk 2/3 sempurna."
+      },
+      {
+        id: 4,
+        title: "Mega Jurang Ekspedisi",
+        targetNumerator: 7,
+        targetDenominator: 8,
+        targetDec: 0.875,
+        targetLabel: "7/8 Meter",
+        hint: "Tantangan kolaborasi! Padukan 1/2 + 1/4 + 1/8. Perhatikan bagaimana pecahan-pecahan ini bersatu!"
+      },
+      {
+        id: 5,
+        title: "Jembatan Presisi Quantum",
+        targetNumerator: 5,
+        targetDenominator: 6,
+        targetDec: 0.8333,
+        targetLabel: "5/6 Meter",
+        hint: "Kombinasikan 1/2 (yang senilai dengan 3/6) ditambah dua rel 1/6!"
+      }
+    ];
+
+    // Fraction Piece Catalogue
+    const PIECE_TYPES = {
+      '1/2': { num: 1, den: 2, val: 0.5, color: '#0284C7', textCol: '#FFFFFF', name: 'Rel Setengah (1/2)' },
+      '1/4': { num: 1, den: 4, val: 0.25, color: '#10B981', textCol: '#000000', name: 'Rel Seperempat (1/4)' },
+      '1/8': { num: 1, den: 8, val: 0.125, color: '#8B5CF6', textCol: '#FFFFFF', name: 'Rel Seperdelapan (1/8)' },
+      '1/3': { num: 1, den: 3, val: 0.33333, color: '#F59E0B', textCol: '#000000', name: 'Rel Sepertiga (1/3)' },
+      '1/6': { num: 1, den: 6, val: 0.16667, color: '#EC4899', textCol: '#FFFFFF', name: 'Rel Seperenam (1/6)' },
+      '1/12': { num: 1, den: 12, val: 0.08333, color: '#06B6D4', textCol: '#000000', name: 'Rel Seperduabelas (1/12)' }
+    };
+
+    // Teams Definition
+    const TEAMS = [
+      { name: "Tim 1: Biru", pieces: ['1/2', '1/4'], border: 'border-blue-500', color: 'text-blue-400' },
+      { name: "Tim 2: Hijau", pieces: ['1/4', '1/8'], border: 'border-emerald-500', color: 'text-emerald-400' },
+      { name: "Tim 3: Kuning", pieces: ['1/3', '1/6'], border: 'border-amber-500', color: 'text-amber-400' },
+      { name: "Tim 4: Ungu", pieces: ['1/6', '1/12'], border: 'border-purple-500', color: 'text-purple-400' }
+    ];
+
+    /* ============================================================
+       3. APPLICATION STATE
+       ============================================================ */
+    const STATE = {
+      mode: 'class', // 'class' or 'sandbox'
+      currentMissionIdx: 0,
+      activeTeamIdx: 0,
+      placedTracks: [], // array of piece type keys e.g. ['1/2', '1/4']
+      pixelScale: 640, // 1.0 unit = 640px in SVG canvas coordinate system
+      chasmStartPx: 150,
+      isDrivingTrain: false,
+      soundEnabled: true,
+      projectorMode: false
+    };
+
+    /* ============================================================
+       4. INITIALIZATION & DOM READY
+       ============================================================ */
+    window.onload = function() {
+      renderMission();
+      renderFractionButtons();
+      renderRulerTicks();
+      updateSandboxSlider(4);
+    };
+
+    /* ============================================================
+       5. CORE CANVAS RENDERING & CALCULATIONS
+       ============================================================ */
+    function getPlacedTotal() {
+      return STATE.placedTracks.reduce((acc, key) => acc + PIECE_TYPES[key].val, 0);
+    }
+
+    function renderRulerTicks() {
+      const g = document.getElementById('rulerTicks');
+      g.innerHTML = '';
+      const startX = STATE.chasmStartPx;
+      const fullWidth = STATE.pixelScale;
+
+      // Draw fractional sub-ticks for 1 Full Meter
+      // We will draw markings for 1/4, 1/2, 3/4, and 1.0
+      const divisions = [
+        { frac: 0.25, label: '1/4' },
+        { frac: 0.50, label: '1/2' },
+        { frac: 0.75, label: '3/4' },
+        { frac: 1.00, label: '1.0m' }
+      ];
+
+      divisions.forEach(d => {
+        const xPos = startX + (d.frac * fullWidth);
+        const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        line.setAttribute("x1", xPos);
+        line.setAttribute("y1", "172");
+        line.setAttribute("x2", xPos);
+        line.setAttribute("y2", "188");
+        line.setAttribute("stroke", "#64748B");
+        line.setAttribute("stroke-width", "2");
+
+        const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        text.setAttribute("x", xPos);
+        text.setAttribute("y", "204");
+        text.setAttribute("fill", "#94A3B8");
+        text.setAttribute("font-size", "10");
+        text.setAttribute("font-weight", "bold");
+        text.setAttribute("text-anchor", "middle");
+        text.textContent = d.label;
+
+        g.appendChild(line);
+        g.appendChild(text);
+      });
+    }
+
+    function updateTracksDisplay() {
+      const container = document.getElementById('tracksContainer');
+      container.innerHTML = '';
+
+      let currentX = STATE.chasmStartPx;
+      const trackHeight = 18;
+      const trackY = 171;
+
+      STATE.placedTracks.forEach((key, idx) => {
+        const piece = PIECE_TYPES[key];
+        const pieceWidth = piece.val * STATE.pixelScale;
+
+        const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
+        group.setAttribute("class", "transition-all duration-300");
+
+        // Track Beam Rect
+        const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        rect.setAttribute("x", currentX);
+        rect.setAttribute("y", trackY);
+        rect.setAttribute("width", pieceWidth);
+        rect.setAttribute("height", trackHeight);
+        rect.setAttribute("rx", "4");
+        rect.setAttribute("fill", piece.color);
+        rect.setAttribute("stroke", "#FFFFFF");
+        rect.setAttribute("stroke-width", "1.5");
+        rect.setAttribute("filter", "url(#neonGlow)");
+
+        // Railway ties texture lines
+        const tiesCount = Math.max(2, Math.floor(pieceWidth / 18));
+        for (let t = 1; t < tiesCount; t++) {
+          const tieX = currentX + (t * (pieceWidth / tiesCount));
+          const tie = document.createElementNS("http://www.w3.org/2000/svg", "line");
+          tie.setAttribute("x1", tieX);
+          tie.setAttribute("y1", trackY);
+          tie.setAttribute("x2", tieX);
+          tie.setAttribute("y2", trackY + trackHeight);
+          tie.setAttribute("stroke", "#000000");
+          tie.setAttribute("stroke-opacity", "0.35");
+          tie.setAttribute("stroke-width", "2");
+          group.appendChild(tie);
+        }
+
+        // Label on Track
+        if (pieceWidth > 28) {
+          const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+          text.setAttribute("x", currentX + pieceWidth / 2);
+          text.setAttribute("y", trackY + 13);
+          text.setAttribute("fill", piece.textCol);
+          text.setAttribute("font-size", pieceWidth < 45 ? "9" : "11");
+          text.setAttribute("font-weight", "bold");
+          text.setAttribute("text-anchor", "middle");
+          text.textContent = key;
+          group.appendChild(text);
+        }
+
+        group.appendChild(rect);
+        container.appendChild(group);
+
+        currentX += pieceWidth;
+      });
+
+      // Update Telemetry & Feedbacks
+      updateTelemetry(currentX);
+    }
+
+    function updateTelemetry(currentTrackEndX) {
+      const curMission = MISSIONS[STATE.currentMissionIdx];
+      const targetVal = curMission.targetDec;
+      const currentVal = getPlacedTotal();
+
+      // Precision rounding check (tolerance 0.01)
+      const diff = currentVal - targetVal;
+      const isExact = Math.abs(diff) < 0.012;
+      const isOver = diff >= 0.012;
+      const isUnder = diff <= -0.012;
+
+      // Labels update
+      document.getElementById('currentDecimalLabel').textContent = `(${currentVal.toFixed(3)}m)`;
+
+      // Build pretty representation of fraction sum e.g. "1/2 + 1/4"
+      if (STATE.placedTracks.length === 0) {
+        document.getElementById('currentFractionLabel').textContent = '0 Meter';
+        document.getElementById('currentFractionLabel').className = 'font-bold text-slate-400 text-sm font-kids';
+      } else {
+        document.getElementById('currentFractionLabel').textContent = STATE.placedTracks.join(' + ');
+        if (isExact) {
+          document.getElementById('currentFractionLabel').className = 'font-bold text-emerald-400 text-sm font-kids animate-pulse';
+        } else if (isOver) {
+          document.getElementById('currentFractionLabel').className = 'font-bold text-rose-400 text-sm font-kids';
+        } else {
+          document.getElementById('currentFractionLabel').className = 'font-bold text-sky-400 text-sm font-kids';
+        }
+      }
+
+      // Update Socratic Assistant & Live Alignment text
+      const feedback = document.getElementById('alignmentFeedback');
+      const speech = document.getElementById('socraticSpeech');
+
+      if (STATE.placedTracks.length === 0) {
+        feedback.innerHTML = `<span class="text-slate-400">Belum ada rel terpasang. Pilih keping pecahan dari depo!</span>`;
+      } else if (isExact) {
+        feedback.innerHTML = `<span class="text-emerald-400 font-bold">âœ¨ PRESISI TEPAT! Panjang rel (${currentVal.toFixed(2)}m) pas menutup jurang target (${targetVal.toFixed(2)}m).</span>`;
+        speech.innerHTML = `"Luar biasa Masinis! Perhatikan bagaimana pecahan gabunganmu bernilai senilai dengan target. Rel ini kokoh untuk dilewati!"`;
+      } else if (isOver) {
+        feedback.innerHTML = `<span class="text-rose-400 font-bold">âš ï¸ OVERSHOOT (Kelebihan ${Math.abs(diff).toFixed(2)}m)! Kereta bisa menabrak tebing.</span>`;
+        speech.innerHTML = `"Awas kapten, rel kita kepanjangan! Coba cabut rel terakhir. Pecahan apa yang lebih kecil yang bisa menggantikannya?"`;
+      } else {
+        const remaining = Math.abs(diff);
+        feedback.innerHTML = `<span class="text-amber-400 font-bold">âš™ï¸ Kurang ${remaining.toFixed(2)}m lagi untuk sampai ke portal target.</span>`;
+        if (remaining === 0.25) {
+          speech.innerHTML = `"Hmm, jurang masih berlubang sedikit. Sisa lubang tampak seukuran 1/4 atau dua keping 1/8. Coba cek depo timmu!"`;
+        } else if (remaining === 0.5) {
+          speech.innerHTML = `"Kita baru menempuh separuh jalan! Butuh 1/2 lagi, atau pecahan senilai mana yang setara dengan setengah?"`;
+        } else {
+          speech.innerHTML = `"Terus bereksplorasi! Coba perhatikan sisa celah di kanvas. Pecahan mana yang paling mendekati?"`;
+        }
+      }
+    }
+
+    /* ============================================================
+       6. TRACK INTERACTIONS (Add, Undo, Clear)
+       ============================================================ */
+    function addTrackPiece(key) {
+      sound.playAddTrack(PIECE_TYPES[key].val);
+      STATE.placedTracks.push(key);
+      updateTracksDisplay();
+
+      // Check if exact match after addition for immediate reward sound
+      const curMission = MISSIONS[STATE.currentMissionIdx];
+      const diff = getPlacedTotal() - curMission.targetDec;
+      if (Math.abs(diff) < 0.012) {
+        sound.playSuccessFanfare();
+      } else if (diff >= 0.012) {
+        sound.playErrorBuzzer();
+      }
+    }
+
+    function undoLastTrack() {
+      if (STATE.placedTracks.length > 0) {
+        sound.playClick();
+        STATE.placedTracks.pop();
+        updateTracksDisplay();
+      }
+    }
+
+    function clearAllTracks() {
+      if (STATE.placedTracks.length > 0) {
+        sound.playClick();
+        STATE.placedTracks = [];
+        updateTracksDisplay();
+        resetTrainPosition();
+      }
+    }
+
+    /* ============================================================
+       7. MISSION CONTROL & LEVEL SELECTION
+       ============================================================ */
+    function loadMission(idx) {
+      sound.playClick();
+      STATE.currentMissionIdx = idx;
+      STATE.placedTracks = [];
+      resetTrainPosition();
+
+      // Update active mission buttons UI
+      document.querySelectorAll('.mission-btn').forEach((btn, i) => {
+        if (i === idx) {
+          btn.className = "mission-btn px-2 py-0.5 rounded bg-amber-500 text-black font-bold";
+        } else {
+          btn.className = "mission-btn px-2 py-0.5 rounded hover:bg-slate-800 text-slate-300";
+        }
+      });
+
+      renderMission();
+      updateTracksDisplay();
+    }
+
+    function renderMission() {
+      const mission = MISSIONS[STATE.currentMissionIdx];
+      document.getElementById('levelBadge').textContent = `Misi #${mission.id}: ${mission.title}`;
+      document.getElementById('targetFractionLabel').textContent = mission.targetLabel;
+      document.getElementById('targetFlagText').textContent = mission.targetNumerator + '/' + mission.targetDenominator;
+
+      // Adjust Target Visual Line in SVG
+      const targetPxWidth = mission.targetDec * STATE.pixelScale;
+      const targetX = STATE.chasmStartPx + targetPxWidth;
+
+      document.getElementById('targetLine').setAttribute('x1', targetX);
+      document.getElementById('targetLine').setAttribute('x2', targetX);
+      document.getElementById('targetFlag').setAttribute('transform', `translate(${targetX}, 115)`);
+      document.getElementById('targetAreaRect').setAttribute('width', targetPxWidth);
+
+      // Kibo initial welcome message
+      document.getElementById('socraticSpeech').innerHTML = `"${mission.title}! Misi kita adalah membentangkan rel tepat <b>${mission.targetLabel}</b>. Berembuklah dengan timmu!"`;
+    }
+
+    /* ============================================================
+       8. TEAM MANAGEMENT (Class Cooperative Mode)
+       ============================================================ */
+    function selectTeam(teamIdx) {
+      sound.playClick();
+      STATE.activeTeamIdx = teamIdx;
+
+      // Update Team Tab UI
+      document.querySelectorAll('.team-tab').forEach((tab, i) => {
+        if (i === teamIdx) {
+          tab.className = `team-tab p-2 rounded-2xl border-2 ${TEAMS[i].border} bg-slate-900 text-left transition ring-2 ring-amber-400`;
+        } else {
+          tab.className = `team-tab p-2 rounded-2xl border border-slate-800 bg-slate-900/60 text-left transition hover:border-slate-700`;
+        }
+      });
+
+      const team = TEAMS[teamIdx];
+      document.getElementById('activeTeamName').textContent = `${team.name} (Spesialis ${team.pieces.join(' & ')})`;
+      document.getElementById('inventoryTeamTag').textContent = `Pabrik ${team.name}`;
+
+      renderFractionButtons();
+    }
+
+    function renderFractionButtons() {
+      const container = document.getElementById('fractionButtonsContainer');
+      container.innerHTML = '';
+
+      // In Sandbox mode, show all available pieces. In Class mode, prioritize team specialization or show all with team highlight
+      const piecesToShow = STATE.mode === 'sandbox' 
+        ? Object.keys(PIECE_TYPES) 
+        : Object.keys(PIECE_TYPES);
+
+      piecesToShow.forEach(key => {
+        const piece = PIECE_TYPES[key];
+        const isTeamSpecialty = STATE.mode === 'class' && TEAMS[STATE.activeTeamIdx].pieces.includes(key);
+
+        const btn = document.createElement('button');
+        btn.onclick = () => addTrackPiece(key);
+        btn.className = `relative p-3 rounded-2xl border transition-all transform active:scale-95 flex flex-col items-center justify-center gap-1 shadow-md ${
+          isTeamSpecialty 
+            ? 'border-amber-400 bg-slate-800 ring-2 ring-amber-400/50 hover:bg-slate-700' 
+            : 'border-slate-700/80 bg-slate-900/90 hover:bg-slate-800 text-slate-300'
+        }`;
+
+        // Top mini badge if it's the team's specialty
+        if (isTeamSpecialty) {
+          const badge = document.createElement('span');
+          badge.className = "absolute -top-2 bg-amber-500 text-black text-[9px] font-extrabold px-1.5 py-0.2 rounded-full";
+          badge.textContent = "TIM";
+          btn.appendChild(badge);
+        }
+
+        // Fraction symbol
+        const fracLabel = document.createElement('div');
+        fracLabel.className = "font-kids font-bold text-lg";
+        fracLabel.style.color = piece.color;
+        fracLabel.textContent = key;
+
+        // Visual mini length preview bar
+        const miniBar = document.createElement('div');
+        miniBar.className = "w-full bg-slate-950 rounded-full h-2 overflow-hidden flex";
+        const miniFill = document.createElement('div');
+        miniFill.className = "h-full rounded-full";
+        miniFill.style.backgroundColor = piece.color;
+        miniFill.style.width = `${Math.min(100, piece.val * 100 * 1.5)}%`;
+        miniBar.appendChild(miniFill);
+
+        const subText = document.createElement('div');
+        subText.className = "text-[10px] text-slate-400 font-mono";
+        subText.textContent = `${(piece.val).toFixed(2)}m`;
+
+        btn.appendChild(fracLabel);
+        btn.appendChild(miniBar);
+        btn.appendChild(subText);
+        container.appendChild(btn);
+      });
+    }
+
+    /* ============================================================
+       9. TRAIN ANIMATION & SUCCESS SIMULATION
+       ============================================================ */
+    function testTrainDrive() {
+      if (STATE.isDrivingTrain) return;
+
+      const curMission = MISSIONS[STATE.currentMissionIdx];
+      const targetVal = curMission.targetDec;
+      const currentVal = getPlacedTotal();
+      const diff = currentVal - targetVal;
+      const isExact = Math.abs(diff) < 0.012;
+
+      sound.playWhistle();
+      STATE.isDrivingTrain = true;
+
+      const train = document.getElementById('trainEngine');
+      const startX = 20;
+      
+      if (isExact) {
+        // Drive across full bridge and into the portal!
+        const destinationX = STATE.chasmStartPx + (targetVal * STATE.pixelScale) - 20;
+        train.style.transform = `translate(${destinationX}px, 100px)`;
+
+        setTimeout(() => {
+          document.getElementById('victoryStars').setAttribute('opacity', '1');
+          sound.playSuccessFanfare();
+        }, 800);
+
+        setTimeout(() => {
+          // Reset or offer next level
+          setTimeout(() => {
+            if (STATE.currentMissionIdx < MISSIONS.length - 1) {
+              loadMission(STATE.currentMissionIdx + 1);
+            }
+          }, 2000);
+        }, 1500);
+
+      } else if (currentVal > targetVal) {
+        // Overshoot: moves forward but derails slightly
+        const overX = STATE.chasmStartPx + (targetVal * STATE.pixelScale);
+        train.style.transform = `translate(${overX}px, 115px) rotate(8deg)`;
+        setTimeout(() => {
+          sound.playErrorBuzzer();
+        }, 600);
+      } else {
+        // Undershoot: drops off the track!
+        const stopX = STATE.chasmStartPx + (currentVal * STATE.pixelScale) - 40;
+        train.style.transform = `translate(${stopX}px, 120px) rotate(15deg)`;
+        setTimeout(() => {
+          sound.playErrorBuzzer();
+        }, 600);
+      }
+
+      setTimeout(() => {
+        STATE.isDrivingTrain = false;
+      }, 2500);
+    }
+
+    function resetTrainPosition() {
+      const train = document.getElementById('trainEngine');
+      train.style.transform = `translate(20px, 100px)`;
+      document.getElementById('victoryStars').setAttribute('opacity', '0');
+    }
+
+    /* ============================================================
+       10. SOCRATIC HELPER & EQUIVALENCE DEMOS
+       ============================================================ */
+    function askKiboHint() {
+      sound.playClick();
+      const curMission = MISSIONS[STATE.currentMissionIdx];
+      document.getElementById('socraticSpeech').innerHTML = `ðŸ’¡ Kibo berbisik: "${curMission.hint}"`;
+      
+      // Animate Kibo Eyes
+      const eyeL = document.getElementById('kiboEyeL');
+      const eyeR = document.getElementById('kiboEyeR');
+      eyeL.setAttribute('fill', '#F59E0B');
+      eyeR.setAttribute('fill', '#F59E0B');
+      setTimeout(() => {
+        eyeL.setAttribute('fill', '#38BDF8');
+        eyeR.setAttribute('fill', '#38BDF8');
+      }, 1000);
+    }
+
+    function demonstrateEquivalence(fracA, fracB) {
+      sound.playClick();
+      document.getElementById('socraticSpeech').innerHTML = `ðŸ” <b>Laboratorium Visual:</b> Coba letakkan satu rel <b>${fracA}</b>, lalu ganti dengan rel <b>${fracB}</b>. Ujung relnya berakhir persis di koordinat yang sama! Inilah bukti nyata <i>Pecahan Senilai</i>.`;
+    }
+
+    /* ============================================================
+       11. MODE SWITCHER & SANDBOX EXPANDER
+       ============================================================ */
+    function switchMode(newMode) {
+      sound.playClick();
+      STATE.mode = newMode;
+      const classBtn = document.getElementById('modeClassBtn');
+      const sandBtn = document.getElementById('modeSandboxBtn');
+      const teamStrip = document.getElementById('classTeamStrip');
+      const teamIndicator = document.getElementById('teamTurnIndicator');
+      const sandboxDeck = document.getElementById('sandboxExtraDeck');
+
+      if (newMode === 'class') {
+        classBtn.className = "px-3.5 py-1.5 rounded-xl text-xs md:text-sm font-bold transition-all bg-amber-500 text-slate-950 shadow-md";
+        sandBtn.className = "px-3.5 py-1.5 rounded-xl text-xs md:text-sm font-bold text-slate-400 hover:text-white transition-all";
+        teamStrip.classList.remove('hidden');
+        teamIndicator.classList.remove('hidden');
+        sandboxDeck.classList.add('hidden');
+      } else {
+        sandBtn.className = "px-3.5 py-1.5 rounded-xl text-xs md:text-sm font-bold transition-all bg-amber-500 text-slate-950 shadow-md";
+        classBtn.className = "px-3.5 py-1.5 rounded-xl text-xs md:text-sm font-bold text-slate-400 hover:text-white transition-all";
+        teamStrip.classList.add('hidden');
+        teamIndicator.classList.add('hidden');
+        sandboxDeck.classList.remove('hidden');
+      }
+
+      renderFractionButtons();
+    }
+
+    function updateSandboxSlider(val) {
+      const denominator = parseInt(val);
+      document.getElementById('sliceSliderVal').textContent = denominator;
+      document.getElementById('sandboxSliceEquation').textContent = `1 Bagian Utuh terbagi menjadi ${denominator} bagian sama besar (tiap bilah = 1/${denominator})`;
+
+      const visualizer = document.getElementById('sandboxSliceVisualizer');
+      visualizer.innerHTML = '';
+
+      for (let i = 0; i < denominator; i++) {
+        const slice = document.createElement('div');
+        slice.className = "h-full flex-1 rounded-lg flex items-center justify-center font-bold text-xs text-white transition-all hover:opacity-80 cursor-pointer shadow";
+        
+        // Dynamic pastel palette
+        const colors = ['#0284C7', '#10B981', '#F59E0B', '#8B5CF6', '#EC4899', '#06B6D4'];
+        slice.style.backgroundColor = colors[i % colors.length];
+        slice.textContent = `1/${denominator}`;
+        slice.title = `Klik untuk memasukkan 1/${denominator} ke lintasan!`;
+        slice.onclick = () => {
+          // If denominator is among recognized keys, add it
+          const key = `1/${denominator}`;
+          if (PIECE_TYPES[key]) {
+            addTrackPiece(key);
+          } else {
+            sound.playClick();
+          }
+        };
+
+        visualizer.appendChild(slice);
+      }
+    }
+
+    /* ============================================================
+       12. ACCESSIBILITY & UTILITY CONTROLS
+       ============================================================ */
+    function toggleSound() {
+      STATE.soundEnabled = !STATE.soundEnabled;
+      sound.enabled = STATE.soundEnabled;
+      document.getElementById('audioIconOn').classList.toggle('hidden', !STATE.soundEnabled);
+      document.getElementById('audioIconOff').classList.toggle('hidden', STATE.soundEnabled);
+    }
+
+    function toggleProjectorMode() {
+      sound.playClick();
+      STATE.projectorMode = !STATE.projectorMode;
+      document.body.classList.toggle('bg-slate-950');
+      document.body.classList.toggle('bg-slate-900');
+      // High contrast outline toggle
+      const canvasCard = document.getElementById('dimensionCanvas').parentElement.parentElement;
+      if (STATE.projectorMode) {
+        canvasCard.classList.add('ring-4', 'ring-amber-500');
+      } else {
+        canvasCard.classList.remove('ring-4', 'ring-amber-500');
+      }
+    }
+
+    function toggleModal(modalId) {
+      sound.playClick();
+      const modal = document.getElementById(modalId);
+      modal.classList.toggle('hidden');
+    }
+  </script>
+</body>
+</html>
